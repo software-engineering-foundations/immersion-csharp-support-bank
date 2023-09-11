@@ -1,0 +1,30 @@
+pool:
+  vmImage: ubuntu-latest
+steps:
+  - task: UseDotNet@2
+    inputs:
+      version: 6.x
+  - task: DotNetCoreCLI@2
+    displayName: 'Install Csharpier'
+    inputs:
+      command: 'custom'
+      custom: 'tool'
+      arguments: 'install --global csharpier'
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
+    inputs:
+      command: 'build'
+  - task: DotNetCoreCLI@2
+    displayName: 'Format'
+    inputs:
+      command: 'custom'
+      custom: 'csharpier'
+      arguments: '--check .'
+  - task: DotNetCoreCLI@2
+    displayName: 'Test'
+    inputs:
+        command: 'test'
